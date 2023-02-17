@@ -7,6 +7,20 @@ import 'package:uuid/uuid.dart';
 import '../assets/licenses.dart';
 import 'hive.dart';
 
+extension TextX on String {
+  Text get text => Text(this);
+  Text get scale2 => Text(this, textScaleFactor: 2);
+  Text get scale4 => Text(this, textScaleFactor: 4);
+  Text get scale6 => Text(this, textScaleFactor: 6);
+}
+
+extension PaddingX on Widget {
+  Widget get pad => Padding(
+        padding: const EdgeInsets.all(8),
+        child: this,
+      );
+}
+
 String get emptyProductsListInfo =>
     'Currently there are no products available in the list. Kindly try adding some products using the corner button.';
 
@@ -34,8 +48,8 @@ List<String> get fonts {
 // String getGoogleFont(x) {
 //   return GoogleFonts.getFont(x).fontFamily!;
 // }
-
-String get randomID => const Uuid().v1();
+const uuid = Uuid();
+String get randomID => uuid.v1();
 const customerIcon = Icon(Icons.people);
 
 const customerLabel = 'CUSTOMERS';
@@ -48,7 +62,7 @@ Future<void> get initDefaultImage async {
   defaultImage = bytes.buffer.asUint8List();
 }
 
-setup() async {
+initializeDependencies() async {
   await RM.storageInitializer(HiveStorage());
   await initDefaultImage;
   GoogleFonts.config.allowRuntimeFetching = false;

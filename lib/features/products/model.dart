@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -44,6 +43,15 @@ class Product with _$Product {
   void updatePrice(double price, Product product) {
     product = product.copyWith(price: price);
   }
+}
+
+class LocaleJsonConverter implements JsonConverter<Locale, String> {
+  const LocaleJsonConverter();
+  @override
+  Locale fromJson(String json) => Locale(json);
+
+  @override
+  String toJson(Locale object) => object.languageCode;
 }
 
 class MaterialColorConverter implements JsonConverter<MaterialColor, int> {

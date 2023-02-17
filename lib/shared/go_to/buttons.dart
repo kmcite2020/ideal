@@ -1,12 +1,12 @@
+import 'package:flutter/material.dart';
 import 'package:ideal/features/customers/view.dart';
 import 'package:ideal/features/dashboard/dashboard.dart';
 import 'package:ideal/features/orders/orders_view.dart';
 import 'package:ideal/features/products/view/products_view.dart';
 
 import '../../features/products/model.dart';
-import '../navigator.dart';
-import '../../features/settings/view.dart';
-import 'package:flutter/material.dart';
+import '../../features/settings/view/view.dart';
+import '../router.dart';
 
 class GotoSettingsViewButton extends StatelessWidget {
   const GotoSettingsViewButton({super.key});
@@ -14,7 +14,7 @@ class GotoSettingsViewButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      onPressed: () => navigator.toPageless(const SettingsView()),
+      onPressed: () => router.toPageless(const SettingsView()),
       icon: const Icon(
         Icons.settings,
       ),
@@ -28,7 +28,7 @@ class GotoDashboardViewButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      onPressed: () => navigator.toPageless(DashboardView()),
+      onPressed: () => router.toPageless(DashboardView()),
       icon: const Icon(
         Icons.dashboard,
       ),
@@ -42,7 +42,7 @@ class GotoProductsViewButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      onPressed: () => navigator.toPageless(ProductsView()),
+      onPressed: () => router.toPageless(ProductsView()),
       icon: const Icon(
         Icons.propane_rounded,
       ),
@@ -56,7 +56,7 @@ class GotoOrdersViewButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      onPressed: () => navigator.toPageless(OrdersView()),
+      onPressed: () => router.toPageless(OrdersView()),
       icon: const Icon(
         Icons.propane_rounded,
       ),
@@ -70,7 +70,7 @@ class GotoCustomersViewButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      onPressed: () => navigator.toPageless(CustomersView()),
+      onPressed: () => router.toPageless(CustomersView()),
       icon: const Icon(
         Icons.propane_rounded,
       ),

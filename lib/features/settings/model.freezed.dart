@@ -26,6 +26,8 @@ mixin _$ConfigData {
   String get font => throw _privateConstructorUsedError;
   double get padding => throw _privateConstructorUsedError;
   double get border => throw _privateConstructorUsedError;
+  @LocaleJsonConverter()
+  Locale get locale => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -44,7 +46,8 @@ abstract class $ConfigDataCopyWith<$Res> {
       @MaterialColorConverter() MaterialColor color,
       String font,
       double padding,
-      double border});
+      double border,
+      @LocaleJsonConverter() Locale locale});
 }
 
 /// @nodoc
@@ -65,6 +68,7 @@ class _$ConfigDataCopyWithImpl<$Res, $Val extends ConfigData>
     Object? font = null,
     Object? padding = null,
     Object? border = null,
+    Object? locale = null,
   }) {
     return _then(_value.copyWith(
       themeMode: null == themeMode
@@ -87,6 +91,10 @@ class _$ConfigDataCopyWithImpl<$Res, $Val extends ConfigData>
           ? _value.border
           : border // ignore: cast_nullable_to_non_nullable
               as double,
+      locale: null == locale
+          ? _value.locale
+          : locale // ignore: cast_nullable_to_non_nullable
+              as Locale,
     ) as $Val);
   }
 }
@@ -104,7 +112,8 @@ abstract class _$$_ConfigDataCopyWith<$Res>
       @MaterialColorConverter() MaterialColor color,
       String font,
       double padding,
-      double border});
+      double border,
+      @LocaleJsonConverter() Locale locale});
 }
 
 /// @nodoc
@@ -123,6 +132,7 @@ class __$$_ConfigDataCopyWithImpl<$Res>
     Object? font = null,
     Object? padding = null,
     Object? border = null,
+    Object? locale = null,
   }) {
     return _then(_$_ConfigData(
       themeMode: null == themeMode
@@ -145,6 +155,10 @@ class __$$_ConfigDataCopyWithImpl<$Res>
           ? _value.border
           : border // ignore: cast_nullable_to_non_nullable
               as double,
+      locale: null == locale
+          ? _value.locale
+          : locale // ignore: cast_nullable_to_non_nullable
+              as Locale,
     ));
   }
 }
@@ -157,7 +171,8 @@ class _$_ConfigData implements _ConfigData {
       @MaterialColorConverter() this.color = Colors.blue,
       this.font = 'Dosis',
       this.padding = 8,
-      this.border = 8});
+      this.border = 8,
+      @LocaleJsonConverter() this.locale = const Locale('en')});
 
   factory _$_ConfigData.fromJson(Map<String, dynamic> json) =>
       _$$_ConfigDataFromJson(json);
@@ -178,10 +193,14 @@ class _$_ConfigData implements _ConfigData {
   @override
   @JsonKey()
   final double border;
+  @override
+  @JsonKey()
+  @LocaleJsonConverter()
+  final Locale locale;
 
   @override
   String toString() {
-    return 'ConfigData(themeMode: $themeMode, color: $color, font: $font, padding: $padding, border: $border)';
+    return 'ConfigData(themeMode: $themeMode, color: $color, font: $font, padding: $padding, border: $border, locale: $locale)';
   }
 
   @override
@@ -194,13 +213,14 @@ class _$_ConfigData implements _ConfigData {
             (identical(other.color, color) || other.color == color) &&
             (identical(other.font, font) || other.font == font) &&
             (identical(other.padding, padding) || other.padding == padding) &&
-            (identical(other.border, border) || other.border == border));
+            (identical(other.border, border) || other.border == border) &&
+            (identical(other.locale, locale) || other.locale == locale));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, themeMode, color, font, padding, border);
+      Object.hash(runtimeType, themeMode, color, font, padding, border, locale);
 
   @JsonKey(ignore: true)
   @override
@@ -222,7 +242,8 @@ abstract class _ConfigData implements ConfigData {
       @MaterialColorConverter() final MaterialColor color,
       final String font,
       final double padding,
-      final double border}) = _$_ConfigData;
+      final double border,
+      @LocaleJsonConverter() final Locale locale}) = _$_ConfigData;
 
   factory _ConfigData.fromJson(Map<String, dynamic> json) =
       _$_ConfigData.fromJson;
@@ -238,6 +259,9 @@ abstract class _ConfigData implements ConfigData {
   double get padding;
   @override
   double get border;
+  @override
+  @LocaleJsonConverter()
+  Locale get locale;
   @override
   @JsonKey(ignore: true)
   _$$_ConfigDataCopyWith<_$_ConfigData> get copyWith =>

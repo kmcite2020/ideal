@@ -19,6 +19,7 @@ class ConfigData with _$ConfigData {
     @Default('Dosis') final String font,
     @Default(8) final double padding,
     @Default(8) final double border,
+    @Default(Locale('en')) @LocaleJsonConverter() final Locale locale,
   }) = _ConfigData;
   factory ConfigData.fromJson(Map<String, dynamic> json) => _$ConfigDataFromJson(json);
 }

@@ -16,6 +16,9 @@ _$_ConfigData _$$_ConfigDataFromJson(Map<String, dynamic> json) =>
       font: json['font'] as String? ?? 'Dosis',
       padding: (json['padding'] as num?)?.toDouble() ?? 8,
       border: (json['border'] as num?)?.toDouble() ?? 8,
+      locale: json['locale'] == null
+          ? const Locale('en')
+          : const LocaleJsonConverter().fromJson(json['locale'] as String),
     );
 
 Map<String, dynamic> _$$_ConfigDataToJson(_$_ConfigData instance) =>
@@ -25,6 +28,7 @@ Map<String, dynamic> _$$_ConfigDataToJson(_$_ConfigData instance) =>
       'font': instance.font,
       'padding': instance.padding,
       'border': instance.border,
+      'locale': const LocaleJsonConverter().toJson(instance.locale),
     };
 
 const _$ThemeModeEnumMap = {
