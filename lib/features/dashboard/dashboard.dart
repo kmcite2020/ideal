@@ -1,14 +1,17 @@
 // ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, must_be_immutable, unused_import, unused_local_variable, dead_code, no_leading_underscores_for_local_identifiers
 
 import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:ideal/shared/go_to/buttons.dart';
 import 'package:ideal/shared/utils.dart';
+
 import '../customers/interface.dart';
-import '../customers/view.dart';
+import '../customers/view/view.dart';
 import '../orders/orders_view.dart';
-import '../products/model.dart';
+import '../products/models/model.dart';
+import '../products/product_controller.dart';
 import '../products/view/products_view.dart';
 
 class DashboardView extends StatelessWidget {
@@ -42,7 +45,7 @@ class DashboardView extends StatelessWidget {
                 title: Text(
                   'TOTAL PRODUCTS AVAILABLE',
                 ),
-                trailing: Text(productBloc.products.length.toString()),
+                trailing: Text(productController.products.length.toString()),
               ),
             ),
             Card(
@@ -50,7 +53,7 @@ class DashboardView extends StatelessWidget {
                 title: Text(
                   'TOTAL CUSTOMERS AVAILABLE',
                 ),
-                trailing: Text(customers.state.length.toString()),
+                trailing: Text(customerController.customers.length.toString()),
               ),
             ),
             Card(
@@ -75,7 +78,7 @@ class DashboardView extends StatelessWidget {
               child: ListTile(
                 title: Text('Current Worth'),
                 subtitle: Text(
-                  productBloc.currentWorth,
+                  productController.currentWorth,
                   textScaleFactor: 2.5,
                 ),
               ),

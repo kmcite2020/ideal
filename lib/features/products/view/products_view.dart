@@ -4,8 +4,9 @@ import 'package:colornames/colornames.dart';
 import 'package:flutter/material.dart';
 import 'package:states_rebuilder/states_rebuilder.dart';
 
-import '../../settings/model.dart';
-import '../model.dart';
+import '../../settings/models/model.dart';
+import '../models/model.dart';
+import '../product_controller.dart';
 import 'add_product.dart';
 import 'product_details.dart';
 
@@ -44,7 +45,7 @@ class ProductsView extends ReactiveStatelessWidget {
           physics: BouncingScrollPhysics(),
           child: Column(
             children: [
-              productBloc.products.isEmpty
+              productController.products.isEmpty
                   ? Container(
                       margin: EdgeInsets.all(8),
                       padding: EdgeInsets.all(8),
@@ -60,9 +61,9 @@ class ProductsView extends ReactiveStatelessWidget {
                       ),
                     )
                   : SizedBox(),
-              for (final Product product in productBloc.products)
+              for (final Product product in productController.products)
                 GestureDetector(
-                  onTap: () => productBloc.deleteProduct(product),
+                  onTap: () => productController.deleteProduct(product),
                   child: Card(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -83,10 +84,10 @@ class ProductsView extends ReactiveStatelessWidget {
                               ),
                             ),
                             Card(
-                              color: product.materialColor,
+                              color: product.colorCapsule.materialColor,
                               child: Padding(
                                 padding: EdgeInsets.all(settingsBloc.padding),
-                                child: Text(product.materialColor.colorName),
+                                child: Text(product.colorCapsule.materialColor.colorName),
                               ),
                             ),
                             Card(
@@ -111,7 +112,7 @@ class ProductsView extends ReactiveStatelessWidget {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(settingsBloc.borderRadius),
                               child: Image.memory(
-                                product.image,
+                                product.imageCapsule.image,
                                 fit: BoxFit.fill,
                               ),
                             ),

@@ -4,7 +4,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:states_rebuilder/states_rebuilder.dart';
-import '../model.dart';
+
+import '../models/model.dart';
+import '../product_controller.dart';
 import 'show_image.dart';
 
 class ProductDetails extends ReactiveStatelessWidget {
@@ -29,7 +31,7 @@ class ProductDetails extends ReactiveStatelessWidget {
       ),
       body: ListView(
         children: [
-          for (final Product prod in productBloc.products)
+          for (final Product prod in productController.products)
             if (prod.id == id)
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -62,13 +64,13 @@ class ProductDetails extends ReactiveStatelessWidget {
                                 onTap: () {
                                   Widget child = ClipRRect(
                                     borderRadius: BorderRadius.circular(20),
-                                    child: Image.memory(prod.image as dynamic),
+                                    child: Image.memory(prod.imageCapsule.image as dynamic),
                                   );
                                   RM.navigate.to(ShowImage(child));
                                 },
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(20),
-                                  child: Image.memory(prod.image as dynamic
+                                  child: Image.memory(prod.imageCapsule.image as dynamic
                                       // width: 250,
                                       // height: 250,
                                       ),
@@ -104,7 +106,7 @@ class ProductDetails extends ReactiveStatelessWidget {
                           children: [
                             InkWell(
                               onTap: () {
-                                productBloc.changeStock(20, prod);
+                                productController.changeStock(20, prod);
                               },
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
@@ -113,7 +115,7 @@ class ProductDetails extends ReactiveStatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-                                productBloc.changeStock(20, prod);
+                                productController.changeStock(20, prod);
                               },
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
@@ -122,7 +124,7 @@ class ProductDetails extends ReactiveStatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-                                productBloc.changePrice(20, prod.id.toString());
+                                productController.changePrice(20, prod.id.toString());
                               },
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
@@ -133,8 +135,8 @@ class ProductDetails extends ReactiveStatelessWidget {
                         ),
                         InkWell(
                           onTap: () {
-                            productBloc.deleteProduct(prod);
-                            RM.navigate.to(ShowImage(Image.memory(prod.image as dynamic)));
+                            productController.deleteProduct(prod);
+                            RM.navigate.to(ShowImage(Image.memory(prod.imageCapsule.image as dynamic)));
                           },
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),

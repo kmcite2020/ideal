@@ -4,49 +4,21 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:states_rebuilder/states_rebuilder.dart';
 
-import '../../shared/cities.dart';
-import '../../shared/utils.dart';
-import '../settings/model.dart';
-import 'interface.dart';
-import 'model.dart';
+import '../../../shared/cities.dart';
+import '../../../shared/utils.dart';
+import '../../settings/models/model.dart';
+import '../interface.dart';
+import '../model.dart';
+import 'customer_details_view.dart';
 
-class CustomerDetails extends StatelessWidget {
-  final id;
-  CustomerDetails(this.id);
+class AddCustomerView extends StatelessWidget {
+  const AddCustomerView({super.key});
+
   @override
-  Widget build(BuildContext context) => Scaffold(
-        body: ListView(
-          children: [
-            Container(
-              padding: EdgeInsets.all(4),
-              margin: EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                // color: Colors.primaries[color.state],
-                borderRadius: BorderRadius.circular(5),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  BackButton(),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text("CUSTOMER DETAILS"),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      );
-}
-
-void showAddCustomerForm(context) {
-  showDialog(
-    context: context,
-    builder: (builder) => OnFormBuilder(
-      listenTo: addCustomerForm,
-      builder: () => SimpleDialog(
-        alignment: Alignment.center,
+  Widget build(BuildContext context) {
+    return OnFormBuilder(
+      listenTo: customerController.addCustomerForm,
+      builder: () => Column(
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -55,48 +27,42 @@ void showAddCustomerForm(context) {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
-              controller: name.controller,
-              focusNode: name.focusNode,
+              controller: customerController.name.controller,
+              focusNode: customerController.name.focusNode,
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
-                errorText: name.error,
-                label: Container(
-                  decoration: BoxDecoration(
-                    color: settingsBloc.color,
-                    borderRadius: BorderRadius.circular(settingsBloc.borderRadius),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: Text('NAME OF BUYER'),
-                  ),
-                ),
-                suffixIcon: name.hasError
+                errorText: customerController.name.error,
+                label: 'name'.text,
+                suffixIcon: customerController.name.hasError
                     ? Icon(Icons.error, color: Theme.of(context).colorScheme.error)
                     : Icon(Icons.check, color: settingsBloc.color),
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: OnFormFieldBuilder(
-              listenTo: city,
-              builder: (value, onChanged) => DropdownButtonFormField(
-                  value: value,
-                  items: cities
-                      .map(
-                        (eachValue) => DropdownMenuItem(
-                          value: eachValue,
-                          child: Text(eachValue),
-                        ),
-                      )
-                      .toList(),
-                  onChanged: onChanged),
+          OnFormFieldBuilder(
+            listenTo: customerController.city,
+            builder: (value, onChanged) => DropdownButtonHideUnderline(
+              child: DropdownButtonFormField(
+                decoration: InputDecoration(
+                  label: 'city'.text,
+                ),
+                value: value,
+                items: cities
+                    .map(
+                      (eachValue) => DropdownMenuItem(
+                        value: eachValue,
+                        child: Text(eachValue),
+                      ),
+                    )
+                    .toList(),
+                onChanged: onChanged,
+              ),
             ),
-          ),
+          ).pad,
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: TextButton.icon(
-              onPressed: addCustomerForm.isValid ? () => addCustomerForm.submit() : null,
+              onPressed: customerController.addCustomerForm.isValid ? () => customerController.addCustomerForm.submit() : null,
               icon: Icon(
                 Icons.save,
               ),
@@ -105,8 +71,8 @@ void showAddCustomerForm(context) {
           )
         ],
       ),
-    ),
-  );
+    );
+  }
 }
 
 class CustomersView extends StatelessWidget {
@@ -130,7 +96,7 @@ class CustomersView extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: IconButton(
               icon: Icon(Icons.add_reaction),
-              onPressed: () => showAddCustomerForm(context),
+              onPressed: () {},
             ),
           ),
         ],
@@ -142,7 +108,8 @@ class CustomersView extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                customers.state.isEmpty
+                AddCustomerView(),
+                customerController.customers.isEmpty
                     ? Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
@@ -151,10 +118,10 @@ class CustomersView extends StatelessWidget {
                         ),
                       )
                     : SizedBox(),
-                for (final Customer value in customers.state)
+                for (final Customer value in customerController.customers)
                   ListTile(
                     onLongPress: () {
-                      removeCustomers(value.id);
+                      customerController.removeCustomers(value.id);
                     },
                     onTap: () {
                       RM.navigate.to(CustomerDetails(value.id));

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:ideal/features/customers/view.dart';
+import 'package:ideal/features/customers/view/view.dart';
 import 'package:ideal/features/dashboard/dashboard.dart';
 import 'package:ideal/features/orders/orders_view.dart';
 import 'package:ideal/features/products/view/products_view.dart';
 
-import '../../features/products/model.dart';
+import '../../features/products/product_controller.dart';
 import '../../features/settings/view/view.dart';
 import '../router.dart';
 
@@ -85,7 +85,7 @@ class AddDummyProduct extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       onPressed: () {
-        productBloc.addProductForm.submit();
+        productController.addProductForm.submit();
       },
       icon: const Icon(
         Icons.propane_rounded,
