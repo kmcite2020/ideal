@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:ideal/shared/utils.dart';
+import 'package:ideal/shared/theme_manager.dart';
 
 class ThemeModeCapsule extends Equatable {
   final ThemeMode themeMode;
@@ -21,7 +21,7 @@ class ThemeModeCapsule extends Equatable {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'themeMode': themeModes.indexOf(themeMode),
+      'themeMode': ThemeManager.themeModes.indexOf(themeMode),
     };
   }
 

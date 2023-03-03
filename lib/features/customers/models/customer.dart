@@ -7,14 +7,11 @@ class Customer extends Equatable {
   final String name;
   final String city;
   final String id;
-  Customer({
+  const Customer({
     required this.name,
     required this.city,
     required this.id,
   });
-
-  @override
-  List<Object> get props => [name, city, id];
 
   Customer copyWith({
     String? name,
@@ -48,17 +45,9 @@ class Customer extends Equatable {
 
   factory Customer.fromJson(String source) => Customer.fromMap(json.decode(source) as Map<String, dynamic>);
 
-  // static List<Customer> fromListJson(String? source) {
-  //   if (source == null) return <Customer>[];
-  //   final List result = json.decode(source) as List;
-  //   return result.map((e) => Customer.fromJson(e)).toList();
-  // }
-
-  // static String toListJson(List<Customer> counters) {
-  //   final List result = counters.map((e) => e.toJson()).toList();
-  //   return json.encode(result);
-  // }
-
   @override
   bool get stringify => true;
+
+  @override
+  List<Object> get props => [name, city, id];
 }

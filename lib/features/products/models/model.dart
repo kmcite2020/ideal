@@ -14,7 +14,7 @@ class Product extends Equatable {
   final String name;
   final String model;
   final Brand brand;
-  final MaterialColorCapsule colorCapsule;
+  final MaterialColorX colorCapsule;
   final double price;
   final int stock;
   final ImageCapsule imageCapsule;
@@ -49,7 +49,7 @@ class Product extends Equatable {
     String? name,
     String? model,
     Brand? brand,
-    MaterialColorCapsule? colorCapsule,
+    MaterialColorX? colorCapsule,
     double? price,
     int? stock,
     ImageCapsule? imageCapsule,
@@ -85,7 +85,7 @@ class Product extends Equatable {
       name: map['name'] as String,
       model: map['model'] as String,
       brand: Brand.fromMap(map['brand'] as Map<String, dynamic>),
-      colorCapsule: MaterialColorCapsule.fromMap(map['colorCapsule'] as Map<String, dynamic>),
+      colorCapsule: MaterialColorX.fromMap(map['colorCapsule'] as Map<String, dynamic>),
       price: map['price'] as double,
       stock: map['stock'] as int,
       imageCapsule: ImageCapsule.fromMap(map['imageCapsule'] as Map<String, dynamic>),
@@ -119,8 +119,10 @@ Product get dummyProduct => Product(
       name: 'test-name',
       model: 'test-model',
       brand: Brand.chinese,
-      colorCapsule: MaterialColorCapsule(materialColor: Colors.amber),
+      colorCapsule: MaterialColorX(color: Colors.amber),
       price: 2,
       stock: 20,
       imageCapsule: ImageCapsule(image: defaultImage),
     );
+const PRODUCT_EMPTY_LIST_MESSAGE =
+    'currently there are no products available in the list. Kindly try adding some products using the corner button.';

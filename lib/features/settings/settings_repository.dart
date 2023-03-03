@@ -7,7 +7,7 @@ abstract class SettingsInterface {
 }
 
 class SettingsRepository implements SettingsInterface {
-  final DataSource dataSource;
+  final SharedPreferencesDataSource dataSource;
   SettingsRepository({
     required this.dataSource,
   });

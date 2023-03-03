@@ -3,41 +3,42 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:ideal/shared/utils.dart';
 
-class MaterialColorCapsule extends Equatable {
-  final MaterialColor materialColor;
-  const MaterialColorCapsule({
-    required this.materialColor,
+import '../../../shared/theme_manager.dart';
+
+class MaterialColorX extends Equatable {
+  final MaterialColor color;
+  const MaterialColorX({
+    required this.color,
   });
 
-  MaterialColorCapsule copyWith({
-    MaterialColor? materialColor,
+  MaterialColorX copyWith({
+    MaterialColor? color,
   }) {
-    return MaterialColorCapsule(
-      materialColor: materialColor ?? this.materialColor,
+    return MaterialColorX(
+      color: color ?? this.color,
     );
   }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'materialColor': colors.indexOf(materialColor),
+      'color': ThemeManager.colors.indexOf(color),
     };
   }
 
-  factory MaterialColorCapsule.fromMap(Map<String, dynamic> map) {
-    return MaterialColorCapsule(
-      materialColor: colors[map['materialColor']],
+  factory MaterialColorX.fromMap(Map<String, dynamic> map) {
+    return MaterialColorX(
+      color: ThemeManager.colors[map['color']],
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory MaterialColorCapsule.fromJson(String source) => MaterialColorCapsule.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory MaterialColorX.fromJson(String source) => MaterialColorX.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   bool get stringify => true;
 
   @override
-  List<Object> get props => [materialColor];
+  List<Object> get props => [color];
 }

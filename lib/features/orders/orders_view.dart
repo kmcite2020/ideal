@@ -5,6 +5,20 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:states_rebuilder/states_rebuilder.dart';
 
+class GotoOrdersViewButton extends StatelessWidget {
+  const GotoOrdersViewButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      onPressed: () => RM.navigate.to(OrdersView()),
+      icon: const Icon(
+        Icons.propane_rounded,
+      ),
+    );
+  }
+}
+
 class OrdersView extends StatelessWidget {
   static String label = 'ORDERS';
   static Icon icon = Icon(Icons.open_with_rounded);

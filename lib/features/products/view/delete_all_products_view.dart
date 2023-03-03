@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ideal/shared/utils.dart';
+import '../../../shared/extensions.dart';
 
 class DeleteAllProductsView extends StatelessWidget {
   const DeleteAllProductsView({super.key});

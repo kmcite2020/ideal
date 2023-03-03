@@ -2,14 +2,30 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:ideal/shared/extensions.dart';
 import 'package:states_rebuilder/states_rebuilder.dart';
 
 import '../../../shared/cities.dart';
 import '../../../shared/utils.dart';
 import '../../settings/models/model.dart';
-import '../interface.dart';
-import '../model.dart';
+import '../customer_bloc.dart';
+import '../customer_repository.dart';
+import '../models/customer.dart';
 import 'customer_details_view.dart';
+
+class GotoCustomersViewButton extends StatelessWidget {
+  const GotoCustomersViewButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      onPressed: () => RM.navigate.to(CustomersView()),
+      icon: const Icon(
+        Icons.propane_rounded,
+      ),
+    );
+  }
+}
 
 class AddCustomerView extends StatelessWidget {
   const AddCustomerView({super.key});
@@ -22,7 +38,7 @@ class AddCustomerView extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text("Customer.label"),
+            child: "Add Customer".textScale2,
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -66,7 +82,7 @@ class AddCustomerView extends StatelessWidget {
               icon: Icon(
                 Icons.save,
               ),
-              label: Text('Save'),
+              label: 'Save'.textScale2,
             ),
           )
         ],
@@ -75,66 +91,62 @@ class AddCustomerView extends StatelessWidget {
   }
 }
 
-class CustomersView extends StatelessWidget {
+class CustomersView extends ReactiveStatelessWidget {
+  final isShown = false.inj();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Padding(
-          padding: EdgeInsets.all(settingsBloc.padding),
-          child: IconButton(
+        automaticallyImplyLeading: false,
+        title: Text('CUSTOMERS'),
+        actions: [
+          IconButton(
+            tooltip: 'press to enable adding customers',
+            icon: Icon(Icons.add_reaction),
+            onPressed: () => isShown.toggle(),
+          ).pad,
+          IconButton(
             tooltip: 'Back to Dashboard',
             onPressed: () => RM.navigate.back(),
             icon: Icon(
               Icons.dashboard,
             ),
-          ),
-        ),
-        title: Text('CUSTOMERS'),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: IconButton(
-              icon: Icon(Icons.add_reaction),
-              onPressed: () {},
-            ),
-          ),
+          ).pad,
         ],
       ),
       body: SafeArea(
         child: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
-          child: Card(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                AddCustomerView(),
-                customerController.customers.isEmpty
-                    ? Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          emptyListInfoCustomer,
-                          textScaleFactor: 2.3,
-                        ),
-                      )
-                    : SizedBox(),
-                for (final Customer value in customerController.customers)
-                  ListTile(
-                    onLongPress: () {
-                      customerController.removeCustomers(value.id);
-                    },
-                    onTap: () {
-                      RM.navigate.to(CustomerDetails(value.id));
-                    },
-                    title: Text(
-                      '${value.name}'.toUpperCase(),
-                    ),
-                    subtitle: Text(
-                      '${value.city}'.toUpperCase(),
-                    ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              !isShown.state ? SizedBox() : Card(child: AddCustomerView()),
+              customerController.customers.isEmpty
+                  ? Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        emptyListInfoCustomer,
+                        textScaleFactor: 2.3,
+                      ),
+                    )
+                  : SizedBox(),
+              for (final Customer value in customerController.customers)
+                ListTile(
+                  onLongPress: () {
+                    customerController.removeCustomers(value.id);
+                  },
+                  onTap: () {
+                    // RM.navigate.to(CustomerDetails(value.id));
+                  },
+                  title: Text(
+                    '''${value.name}
+${value.id}''',
                   ),
-              ],
-            ),
+                  subtitle: Text(
+                    '${value.city}',
+                  ),
+                ),
+            ],
           ),
         ),
       ),

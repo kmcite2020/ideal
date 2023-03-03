@@ -4,22 +4,44 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:ideal/shared/go_to/buttons.dart';
+import 'package:ideal/shared/extensions.dart';
 import 'package:ideal/shared/utils.dart';
+import 'package:states_rebuilder/states_rebuilder.dart';
 
-import '../customers/interface.dart';
+import '../customers/customer_bloc.dart';
+import '../customers/customer_repository.dart';
 import '../customers/view/view.dart';
 import '../orders/orders_view.dart';
 import '../products/models/model.dart';
-import '../products/product_controller.dart';
+import '../products/products_bloc.dart';
+import '../products/view/add_product.dart';
 import '../products/view/products_view.dart';
+import '../settings/view/view.dart';
 
-class DashboardView extends StatelessWidget {
+class GotoDashboardViewButton extends ReactiveStatelessWidget {
+  const GotoDashboardViewButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      onPressed: () => RM.navigate.to(DashboardView()),
+      icon: const Icon(
+        Icons.dashboard,
+      ),
+    );
+  }
+}
+
+class DashboardView extends ReactiveStatelessWidget {
   @override
   Widget build(context) {
     return Scaffold(
       appBar: AppBar(
-        actions: [GotoSettingsViewButton(), GotoProductsViewButton(), AddDummyProduct()],
+        actions: [
+          GotoSettingsViewButton(),
+          GotoProductsViewButton(),
+          AddDummyProduct(),
+        ],
         title: Text('Dashboard'),
       ),
       body: SafeArea(
@@ -27,62 +49,51 @@ class DashboardView extends StatelessWidget {
           shrinkWrap: true,
           physics: BouncingScrollPhysics(),
           children: [
-            Card(child: ListTile(title: Text('PRODUCTS'), trailing: GotoProductsViewButton())),
-            Card(
-              child: ListTile(
-                title: Text(customerLabel),
-                trailing: GotoCustomersViewButton(),
+            ListTile(
+              title: Text('PRODUCTS'),
+              trailing: GotoProductsViewButton(),
+            ).pad,
+            ListTile(
+              title: Text(customerLabel),
+              trailing: GotoCustomersViewButton(),
+            ).pad,
+            ListTile(
+              title: Text(OrdersView.label),
+              trailing: GotoOrdersViewButton(),
+            ).pad,
+            ListTile(
+              title: Text(
+                'TOTAL PRODUCTS AVAILABLE',
               ),
-            ),
-            Card(
-              child: ListTile(
-                title: Text(OrdersView.label),
-                trailing: GotoOrdersViewButton(),
+              trailing: Text(productsBloc.products.length.toString()),
+            ).pad,
+            ListTile(
+              title: Text(
+                'TOTAL CUSTOMERS AVAILABLE',
               ),
-            ),
-            Card(
-              child: ListTile(
-                title: Text(
-                  'TOTAL PRODUCTS AVAILABLE',
-                ),
-                trailing: Text(productController.products.length.toString()),
+              trailing: Text(customerController.customers.length.toString()),
+            ).pad,
+            ListTile(
+              title: Text(
+                'TOTAL PRODUCTS SOLD',
               ),
-            ),
-            Card(
-              child: ListTile(
-                title: Text(
-                  'TOTAL CUSTOMERS AVAILABLE',
-                ),
-                trailing: Text(customerController.customers.length.toString()),
+              trailing: Text('20'),
+              subtitle: Text('PRODUCTS SOLD ALOT'),
+            ).pad,
+            ListTile(
+              trailing: Text('25'),
+              title: Text(
+                'TOTAL CUSTOMERS SERVED',
               ),
-            ),
-            Card(
-              child: ListTile(
-                title: Text(
-                  'TOTAL PRODUCTS SOLD',
-                ),
-                trailing: Text('20'),
-                subtitle: Text('PRODUCTS SOLD ALOT'),
+              subtitle: Text('NO CUSTOMER SATISFIED'),
+            ).pad,
+            ListTile(
+              title: Text('Current Worth'),
+              subtitle: Text(
+                productsBloc.currentWorth,
+                textScaleFactor: 2.5,
               ),
-            ),
-            Card(
-              child: ListTile(
-                trailing: Text('25'),
-                title: Text(
-                  'TOTAL CUSTOMERS SERVED',
-                ),
-                subtitle: Text('NO CUSTOMER SATISFIED'),
-              ),
-            ),
-            Card(
-              child: ListTile(
-                title: Text('Current Worth'),
-                subtitle: Text(
-                  productController.currentWorth,
-                  textScaleFactor: 2.5,
-                ),
-              ),
-            ),
+            ).pad,
           ],
         ),
       ),

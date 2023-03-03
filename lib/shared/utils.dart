@@ -1,50 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:ideal/features/products/data_source.dart';
-import 'package:ideal/features/settings/models/model.dart';
-import 'package:states_rebuilder/states_rebuilder.dart';
 import 'package:uuid/uuid.dart';
 
 import '../assets/licenses.dart';
-import 'hive.dart';
-
-extension TextX on String {
-  Text get text => Text(this);
-  Text get textScale2 => Text(this, textScaleFactor: 2);
-  Text get textScale4 => Text(this, textScaleFactor: 4);
-  Text get textScale6 => Text(this, textScaleFactor: 6);
-}
-
-extension PaddingX on Widget {
-  Widget get pad => Padding(
-        padding: EdgeInsets.all(settingsBloc.padding),
-        child: this,
-      );
-}
-
-String get emptyProductsListInfo =>
-    'Currently there are no products available in the list. Kindly try adding some products using the corner button.';
-
-List<MaterialColor> get colors => Colors.primaries;
-List<ThemeMode> get themeModes => ThemeMode.values;
-// List<AvailableApps> get availableApps => AvailableApps.values;
-List<String> get fonts {
-  return [
-    "Azeret Mono",
-    "Comfortaa",
-    "DM Mono",
-    "Dosis",
-    "Fira Sans",
-    "IBM Plex Mono",
-    "Josefin Sans",
-    "Montserrat",
-    "Space Mono",
-    "Ubuntu",
-  ];
-}
-
-typedef Font = String;
+import 'data_source.dart';
 
 const uuid = Uuid();
 String get randomID => uuid.v1();
@@ -60,11 +20,11 @@ Future<void> get initDefaultImage async {
   defaultImage = bytes.buffer.asUint8List();
 }
 
-final DataSource source = MockDataSource();
-initializeDependencies() async {
-  await RM.storageInitializer(HiveStorage());
+final source = SharedPreferencesDataSource();
+Future<void> initializeDependencies() async {
   await source.init();
   await initDefaultImage;
+  // await SharedPreferences.getInstance().then((value) => value.clear());
   GoogleFonts.config.allowRuntimeFetching = false;
   addLicenses();
 }

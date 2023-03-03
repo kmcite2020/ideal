@@ -27,7 +27,7 @@ class ProductsCapsule extends Equatable {
   factory ProductsCapsule.fromMap(Map<String, dynamic> map) {
     return ProductsCapsule(
       products: List<Product>.from(
-        (map['products'] as List<int>).map<Product>(
+        (map['products']).map<Product>(
           (x) => Product.fromMap(x as Map<String, dynamic>),
         ),
       ),

@@ -2,7 +2,8 @@ import 'package:colornames/colornames.dart';
 import 'package:flutter/material.dart';
 import 'package:states_rebuilder/states_rebuilder.dart';
 
-import '../../../shared/utils.dart';
+import '../../../shared/extensions.dart';
+import '../../../shared/theme_manager.dart';
 import '../models/model.dart';
 
 class ColorsView extends ReactiveStatelessWidget {
@@ -27,13 +28,13 @@ class ColorsView extends ReactiveStatelessWidget {
           shrinkWrap: true,
           crossAxisCount: 3,
           children: [
-            for (final eachColor in colors.take(isShown.state ? 18 : 6))
+            for (final eachColor in ThemeManager.colors.take(isShown.state ? 18 : 6))
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   foregroundColor: eachColor[100],
                   backgroundColor: eachColor[900],
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(ThemeManager.borderRadius),
                   ),
                 ),
                 onPressed: () {

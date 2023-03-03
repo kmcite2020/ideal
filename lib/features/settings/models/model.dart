@@ -3,12 +3,13 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:ideal/features/products/data_source.dart';
 import 'package:ideal/features/products/models/color_capsule.dart';
 import 'package:ideal/features/settings/models/locale_capsule.dart';
+import 'package:ideal/shared/data_source.dart';
 import 'package:ideal/shared/utils.dart';
 import 'package:states_rebuilder/states_rebuilder.dart';
 
+import '../../../shared/extensions.dart';
 import 'theme_mode_capsule.dart';
 
 part '../settings_controller.dart';
@@ -16,7 +17,7 @@ part '../settings_repository.dart';
 
 class ConfigData extends Equatable {
   final ThemeModeCapsule themeModeCapsule;
-  final MaterialColorCapsule colorCapsule;
+  final MaterialColorX colorCapsule;
   final String font;
   final double padding;
   final double border;
@@ -32,7 +33,7 @@ class ConfigData extends Equatable {
 
   ConfigData copyWith({
     ThemeModeCapsule? themeModeCapsule,
-    MaterialColorCapsule? colorCapsule,
+    MaterialColorX? colorCapsule,
     String? font,
     double? padding,
     double? border,
@@ -62,7 +63,7 @@ class ConfigData extends Equatable {
   static ConfigData fromMap(Map<String, dynamic> map) {
     return ConfigData(
       themeModeCapsule: ThemeModeCapsule.fromMap(map['themeModeCapsule'] as Map<String, dynamic>),
-      colorCapsule: MaterialColorCapsule.fromMap(map['colorCapsule'] as Map<String, dynamic>),
+      colorCapsule: MaterialColorX.fromMap(map['colorCapsule'] as Map<String, dynamic>),
       font: map['font'] as String,
       padding: map['padding'] as double,
       border: map['border'] as double,
@@ -101,7 +102,7 @@ class ConfigData extends Equatable {
         themeModeCapsule: ThemeModeCapsule(
           themeMode: ThemeMode.system,
         ),
-        colorCapsule: MaterialColorCapsule(materialColor: Colors.blue),
+        colorCapsule: MaterialColorX(color: Colors.blue),
         font: 'DM Mono',
         localeCapsule: LocaleCapsule(
           locale: Locale('en'),

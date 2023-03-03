@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:ideal/features/settings/models/model.dart';
-import 'package:ideal/shared/utils.dart';
 import 'package:states_rebuilder/states_rebuilder.dart';
+
+import '../../../shared/extensions.dart';
+import '../../../shared/theme_manager.dart';
+import '../models/model.dart';
 
 class ThemeModesView extends ReactiveStatelessWidget {
   const ThemeModesView({super.key});
@@ -12,7 +14,7 @@ class ThemeModesView extends ReactiveStatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         'Modes'.textScale4.pad,
-        for (final ThemeMode eachMode in themeModes)
+        for (final ThemeMode eachMode in ThemeManager.themeModes)
           ListTile(
             onTap: () {
               settingsBloc.themeMode = eachMode;
@@ -27,9 +29,11 @@ class ThemeModesView extends ReactiveStatelessWidget {
                 )
               ],
             ),
-            selected: settingsBloc.themeMode == eachMode,
+            selected: isThemeModeSelected(eachMode),
           )
       ],
     );
   }
 }
+
+bool isThemeModeSelected(ThemeMode eachMode) => settingsBloc.themeMode == eachMode;

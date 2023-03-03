@@ -3,33 +3,41 @@ part of 'models/model.dart';
 
 @immutable
 class SettingsController {
-  final SettingsInterface interface;
-  SettingsController({required this.interface});
+  final SettingsInterface repo;
+  SettingsController({required this.repo});
 
   late final configDataRM = RM.inject<ConfigData>(
-    () => interface.configData,
+    () => repo.configData,
     sideEffects: SideEffects(
-      onSetState: (p0) {
-        interface.configData = p0.state;
+      onSetState: (snap) {
+        repo.configData = snap.state;
       },
     ),
   );
 
   ThemeMode get themeMode => configDataRM.state.themeModeCapsule.themeMode;
-  MaterialColor get color => configDataRM.state.colorCapsule.materialColor;
+  MaterialColor get color => configDataRM.state.colorCapsule.color;
   String get font => configDataRM.state.font;
   double get padding => configDataRM.state.padding;
   double get borderRadius => configDataRM.state.border;
-  double get appBarHeight => 80;
-  set themeMode(ThemeMode themeMode) =>
-      configDataRM.state = configDataRM.state.copyWith(themeModeCapsule: ThemeModeCapsule(themeMode: themeMode));
-  set color(MaterialColor color) =>
-      configDataRM.state = configDataRM.state.copyWith(colorCapsule: MaterialColorCapsule(materialColor: color));
-  set font(Font font) => configDataRM.state = configDataRM.state.copyWith(font: font);
-  set padding(double padding) => configDataRM.state = configDataRM.state.copyWith(padding: padding);
-  set border(double border) => configDataRM.state = configDataRM.state.copyWith(border: border);
+
+  set themeMode(ThemeMode themeMode) => configDataRM.state = configDataRM.state.copyWith(
+        themeModeCapsule: ThemeModeCapsule(themeMode: themeMode),
+      );
+  set color(MaterialColor color) => configDataRM.state = configDataRM.state.copyWith(
+        colorCapsule: MaterialColorX(color: color),
+      );
+  set font(Font font) => configDataRM.state = configDataRM.state.copyWith(
+        font: font,
+      );
+  set padding(double padding) => configDataRM.state = configDataRM.state.copyWith(
+        padding: padding,
+      );
+  set border(double border) => configDataRM.state = configDataRM.state.copyWith(
+        border: border,
+      );
 }
 
 final SettingsController settingsBloc = SettingsController(
-  interface: SettingsRepository(dataSource: source),
+  repo: SettingsRepository(dataSource: source),
 );

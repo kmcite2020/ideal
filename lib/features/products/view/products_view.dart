@@ -2,11 +2,13 @@
 
 import 'package:colornames/colornames.dart';
 import 'package:flutter/material.dart';
+import 'package:ideal/shared/extensions.dart';
+import 'package:ideal/shared/theme_manager.dart';
 import 'package:states_rebuilder/states_rebuilder.dart';
 
 import '../../settings/models/model.dart';
 import '../models/model.dart';
-import '../product_controller.dart';
+import '../products_bloc.dart';
 import 'add_product.dart';
 import 'product_details.dart';
 
@@ -45,111 +47,76 @@ class ProductsView extends ReactiveStatelessWidget {
           physics: BouncingScrollPhysics(),
           child: Column(
             children: [
-              productController.products.isEmpty
-                  ? Container(
-                      margin: EdgeInsets.all(8),
-                      padding: EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        border: Border.all(
-                          width: 2,
-                        ),
+              productsBloc.products.isEmpty ? PRODUCT_EMPTY_LIST_MESSAGE.text : SizedBox(),
+              for (final Product product in productsBloc.products)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ListTile(
+                      tileColor: product.colorCapsule.color,
+                      title: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          product.name.text.clipRadius,
+                          product.brand.text,
+                          product.colorCapsule.color.colorName.text,
+                          product.model.text,
+                          product.price.floor().textScale2,
+                        ],
                       ),
-                      child: Text(
-                        "  Product.emptyListInfo",
-                        textScaleFactor: 2.5,
+                      trailing: IconButton(
+                        onPressed: () {
+                          RM.navigate.to(ProductDetails(product.id));
+                        },
+                        icon: Icon(Icons.info),
                       ),
-                    )
-                  : SizedBox(),
-              for (final Product product in productController.products)
-                GestureDetector(
-                  onTap: () => productController.deleteProduct(product),
-                  child: Card(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Wrap(
-                          // crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Card(
-                              child: Padding(
-                                padding: EdgeInsets.all(settingsBloc.padding),
-                                child: Text("Name: ${product.name}"),
-                              ),
-                            ),
-                            Card(
-                              child: Padding(
-                                padding: EdgeInsets.all(settingsBloc.padding),
-                                child: Text("Brand: " + product.brand.description),
-                              ),
-                            ),
-                            Card(
-                              color: product.colorCapsule.materialColor,
-                              child: Padding(
-                                padding: EdgeInsets.all(settingsBloc.padding),
-                                child: Text(product.colorCapsule.materialColor.colorName),
-                              ),
-                            ),
-                            Card(
-                              child: Padding(
-                                padding: EdgeInsets.all(settingsBloc.padding),
-                                child: Text("Model: ${product.model}"),
-                              ),
-                            ),
-                            Card(
-                              child: Padding(
-                                padding: EdgeInsets.all(settingsBloc.padding),
-                                child: Text("Price: ${product.price.toInt()}"),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(settingsBloc.padding),
-                          child: SizedBox(
+                      subtitle: Column(
+                        children: [
+                          SizedBox(
                             width: size.width,
                             height: size.width / 2,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(settingsBloc.borderRadius),
-                              child: Image.memory(
-                                product.imageCapsule.image,
-                                fit: BoxFit.fill,
-                              ),
+                            child: Image.memory(
+                              product.imageCapsule.image,
+                              fit: BoxFit.fill,
                             ),
                           ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(settingsBloc.padding),
-                          child: ElevatedButton(
-                            onPressed: () {
-                              RM.navigate.to(ProductDetails(product.id));
-                            },
-                            child: Text(
-                              'DETAILS',
-                            ),
-                          ),
-                        ),
-                        Card(
-                          child: Padding(
-                            padding: EdgeInsets.all(settingsBloc.padding),
-                            child: Stack(
-                              children: [
-                                LinearProgressIndicator(
-                                  minHeight: 25,
+                          Stack(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(
+                                  ThemeManager.borderRadius,
+                                ),
+                                child: LinearProgressIndicator(
+                                  minHeight: 40,
                                   value: product.stock / 500,
                                 ),
-                                Align(child: Text("${product.stock}/500", textScaleFactor: 1.2))
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                              ),
+                              Center(child: "${product.stock}/500".textScale2)
+                            ],
+                          ).pad
+                        ],
+                      ),
+                    ).pad.clipRadius.pad,
+                  ],
                 ),
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class GotoProductsViewButton extends StatelessWidget {
+  const GotoProductsViewButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      tooltip: 'toProducts',
+      onPressed: () => RM.navigate.to(ProductsView()),
+      icon: const Icon(
+        Icons.perm_phone_msg,
       ),
     );
   }

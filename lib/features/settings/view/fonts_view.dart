@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:ideal/shared/utils.dart';
+import '../../../shared/extensions.dart';
 import 'package:states_rebuilder/states_rebuilder.dart';
 
+import '../../../shared/theme_manager.dart';
 import '../models/model.dart';
 
 class FontsView extends ReactiveStatelessWidget {
@@ -26,13 +27,13 @@ class FontsView extends ReactiveStatelessWidget {
           shrinkWrap: true,
           crossAxisCount: 3,
           children: [
-            for (final Font font in fonts.take(isShown.state ? 9 : 3))
+            for (final Font font in ThemeManager.fonts.take(isShown.state ? 9 : 3))
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   foregroundColor: settingsBloc.color[100],
                   backgroundColor: settingsBloc.color[900],
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(ThemeManager.borderRadius),
                   ),
                 ),
                 onPressed: () {
